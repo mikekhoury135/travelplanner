@@ -5,6 +5,8 @@ import { HotelForm } from './components/HotelForm';
 import { HotelList } from './components/HotelList';
 import { RentalCarForm } from './components/RentalCarForm';
 import { RentalCarList } from './components/RentalCarList';
+import { TrainForm } from './components/TrainForm';
+import { TrainList } from './components/TrainList';
 import { SelectionSummary } from './components/SelectionSummary';
 
 const App = () => {
@@ -44,6 +46,15 @@ const App = () => {
             </header>
             <RentalCarForm />
             <RentalCarList />
+          </section>
+
+          <section className="panel">
+            <header className="panel__header">
+              <h2>Trains</h2>
+              <p className="muted">Track rail segments and station details for multi-city journeys.</p>
+            </header>
+            <TrainForm />
+            <TrainList />
           </section>
         </div>
         <SelectionSummary />

@@ -9,6 +9,8 @@ const emptyForm = {
   priceCad: '',
   pricePoints: '',
   pointsPartner: '',
+  hasConnection: false,
+  totalDuration: '',
 };
 
 export const FlightForm = () => {
@@ -37,6 +39,8 @@ export const FlightForm = () => {
       priceCad,
       pricePoints,
       pointsPartner: formState.pointsPartner.trim() || undefined,
+      hasConnection: formState.hasConnection,
+      totalDuration: formState.totalDuration.trim() || undefined,
     });
 
     setFormState(emptyForm);
@@ -81,6 +85,22 @@ export const FlightForm = () => {
             value={formState.departure}
             onChange={(event) => setFormState((state) => ({ ...state, departure: event.target.value }))}
           />
+        </label>
+        <label>
+          Total travel time
+          <input
+            value={formState.totalDuration}
+            onChange={(event) => setFormState((state) => ({ ...state, totalDuration: event.target.value }))}
+            placeholder="e.g. 7h 45m"
+          />
+        </label>
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            checked={formState.hasConnection}
+            onChange={(event) => setFormState((state) => ({ ...state, hasConnection: event.target.checked }))}
+          />
+          Connecting flight
         </label>
         <label>
           Price (CAD)

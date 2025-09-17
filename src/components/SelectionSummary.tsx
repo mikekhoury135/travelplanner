@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTravelData } from '../context/useTravelData';
-import { calculateDayDiff, formatCurrency } from '../utils/format';
+import { calculateDayDiff, formatCurrency, formatDateTime } from '../utils/format';
 
 const getRentalTotal = (dailyRate: number, pickupDate: string, dropoffDate: string) => {
   const days = calculateDayDiff(pickupDate, dropoffDate) ?? 1;
@@ -11,12 +11,13 @@ const getRentalTotal = (dailyRate: number, pickupDate: string, dropoffDate: stri
 };
 
 export const SelectionSummary = () => {
-  const { flights, hotels, rentals, clearAll } = useTravelData();
+  const { flights, hotels, rentals, trains, clearAll } = useTravelData();
 
   const summary = useMemo(() => {
     const selectedFlights = flights.filter((flight) => flight.selected);
     const selectedHotels = hotels.filter((hotel) => hotel.selected);
     const selectedRentals = rentals.filter((rental) => rental.selected);
+    const selectedTrains = trains.filter((train) => train.selected);
 
     const flightCost = selectedFlights.reduce((total, flight) => total + flight.priceCad, 0);
     const flightPoints = selectedFlights.reduce((total, flight) => total + (flight.pricePoints ?? 0), 0);
@@ -29,24 +30,29 @@ export const SelectionSummary = () => {
     }));
     const rentalCost = rentalSummaries.reduce((total, item) => total + item.total, 0);
 
+    const trainCost = selectedTrains.reduce((total, train) => total + train.priceCad, 0);
+
     return {
       selectedFlights,
       selectedHotels,
       rentalSummaries,
+      selectedTrains,
       totals: {
         flightCost,
         flightPoints,
         hotelCost,
         rentalCost,
-        grandTotal: flightCost + hotelCost + rentalCost,
+        trainCost,
+        grandTotal: flightCost + hotelCost + rentalCost + trainCost,
       },
     };
-  }, [flights, hotels, rentals]);
+  }, [flights, hotels, rentals, trains]);
 
   const nothingSelected =
     summary.selectedFlights.length === 0 &&
     summary.selectedHotels.length === 0 &&
-    summary.rentalSummaries.length === 0;
+    summary.rentalSummaries.length === 0 &&
+    summary.selectedTrains.length === 0;
 
   return (
     <section className="summary">
@@ -123,6 +129,24 @@ export const SelectionSummary = () => {
               </ul>
               <p className="summary__total">Rental total: {formatCurrency(summary.totals.rentalCost)}</p>
               <p className="muted">Rental totals assume one day if an end date is not provided.</p>
+            </section>
+          )}
+
+          {summary.selectedTrains.length > 0 && (
+            <section>
+              <h3>Trains</h3>
+              <ul className="summary__list">
+                {summary.selectedTrains.map((train) => (
+                  <li key={train.id}>
+                    <strong>
+                      {train.startingPoint} → {train.destination}
+                    </strong>
+                    <span>{formatCurrency(train.priceCad)}</span>
+                    {train.departureTime && <span>{formatDateTime(train.departureTime)}</span>}
+                  </li>
+                ))}
+              </ul>
+              <p className="summary__total">Train total: {formatCurrency(summary.totals.trainCost)}</p>
             </section>
           )}
         </div>

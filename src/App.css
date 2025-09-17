@@ -91,6 +91,7 @@
   background: #fff;
   color: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .form input:focus,
@@ -202,6 +203,20 @@ button.link:focus-visible {
 .option-card__footer {
   display: flex;
   justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.option-card__edit {
+  display: grid;
+  gap: 1rem;
+}
+
+.option-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .select-control {
@@ -326,3 +341,16 @@ button.link:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+.form label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.75rem 0 0;
+  color: var(--muted);
+}
+
+.form label.checkbox input {
+  width: auto;
+}
+

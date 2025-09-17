@@ -7,6 +7,8 @@ export interface FlightOption {
   priceCad: number;
   pricePoints?: number;
   pointsPartner?: string;
+  hasConnection: boolean;
+  totalDuration?: string;
   selected: boolean;
 }
 
@@ -15,8 +17,8 @@ export interface HotelOption {
   name: string;
   city: string;
   starRating?: number;
-  address: string;
-  contact: string;
+  address?: string;
+  contact?: string;
   checkIn: string; // ISO date string
   checkOut: string; // ISO date string
   priceCad: number;
@@ -34,12 +36,25 @@ export interface RentalCarOption {
   selected: boolean;
 }
 
+export interface TrainOption {
+  id: string;
+  startingPoint: string;
+  destination: string;
+  departureTime?: string; // ISO string representing departure date and time
+  station?: string;
+  stationAddress?: string;
+  priceCad: number;
+  selected: boolean;
+}
+
 export interface TravelDataState {
   flights: FlightOption[];
   hotels: HotelOption[];
   rentals: RentalCarOption[];
+  trains: TrainOption[];
 }
 
 export type AddFlightPayload = Omit<FlightOption, 'id' | 'selected'>;
 export type AddHotelPayload = Omit<HotelOption, 'id' | 'selected'>;
 export type AddRentalPayload = Omit<RentalCarOption, 'id' | 'selected'>;
+export type AddTrainPayload = Omit<TrainOption, 'id' | 'selected'>;

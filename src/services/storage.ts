@@ -21,14 +21,13 @@ export class LocalTravelDataStore implements TravelDataStore {
 
     try {
       const parsed = JSON.parse(raw);
-      if (
-        parsed &&
-        typeof parsed === 'object' &&
-        'flights' in parsed &&
-        'hotels' in parsed &&
-        'rentals' in parsed
-      ) {
-        return parsed as TravelDataState;
+      if (parsed && typeof parsed === 'object') {
+        return {
+          flights: Array.isArray(parsed.flights) ? parsed.flights : [],
+          hotels: Array.isArray(parsed.hotels) ? parsed.hotels : [],
+          rentals: Array.isArray(parsed.rentals) ? parsed.rentals : [],
+          trains: Array.isArray(parsed.trains) ? parsed.trains : [],
+        } satisfies TravelDataState;
       }
     } catch (error) {
       console.error('Failed to parse stored travel data', error);

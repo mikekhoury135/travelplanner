@@ -17,35 +17,42 @@ const dateTimeFormatter = new Intl.DateTimeFormat('en-CA', {
   minute: '2-digit',
 });
 
-export const formatCurrency = (value: number) => currencyFormatter.format(value);
-
-export const formatDate = (value: string | undefined) => {
+const parseInputDate = (value: string | undefined) => {
   if (!value) {
-    return '—';
-  }
-
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? '—' : dateFormatter.format(date);
-};
-
-export const formatDateTime = (value: string | undefined) => {
-  if (!value) {
-    return '—';
-  }
-
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? '—' : dateTimeFormatter.format(date);
-};
-
-export const calculateDayDiff = (start: string | undefined, end: string | undefined) => {
-  if (!start || !end) {
     return undefined;
   }
 
-  const startDate = new Date(start);
-  const endDate = new Date(end);
+  if (value.includes('T')) {
+    const dateTime = new Date(value);
+    return Number.isNaN(dateTime.getTime()) ? undefined : dateTime;
+  }
 
-  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+  const [year, month, day] = value.split('-').map((part) => Number.parseInt(part, 10));
+  if (!year || !month || !day) {
+    return undefined;
+  }
+
+  const date = new Date(year, month - 1, day);
+  return Number.isNaN(date.getTime()) ? undefined : date;
+};
+
+export const formatCurrency = (value: number) => currencyFormatter.format(value);
+
+export const formatDate = (value: string | undefined) => {
+  const date = parseInputDate(value);
+  return date ? dateFormatter.format(date) : '—';
+};
+
+export const formatDateTime = (value: string | undefined) => {
+  const date = parseInputDate(value);
+  return date ? dateTimeFormatter.format(date) : '—';
+};
+
+export const calculateDayDiff = (start: string | undefined, end: string | undefined) => {
+  const startDate = parseInputDate(start);
+  const endDate = parseInputDate(end);
+
+  if (!startDate || !endDate) {
     return undefined;
   }
 

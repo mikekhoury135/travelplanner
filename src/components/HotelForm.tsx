@@ -19,7 +19,7 @@ export const HotelForm = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formState.name || !formState.city || !formState.address || !formState.contact) {
+    if (!formState.name || !formState.city) {
       return;
     }
 
@@ -34,8 +34,8 @@ export const HotelForm = () => {
       name: formState.name.trim(),
       city: formState.city.trim(),
       starRating,
-      address: formState.address.trim(),
-      contact: formState.contact.trim(),
+      address: formState.address.trim() || undefined,
+      contact: formState.contact.trim() || undefined,
       checkIn: formState.checkIn,
       checkOut: formState.checkOut,
       priceCad,
@@ -80,7 +80,6 @@ export const HotelForm = () => {
         <label className="span-2">
           Address
           <input
-            required
             value={formState.address}
             onChange={(event) => setFormState((state) => ({ ...state, address: event.target.value }))}
             placeholder="Street, city, country"
@@ -88,8 +87,7 @@ export const HotelForm = () => {
         </label>
         <label>
           Contact
-          <input
-            required
+          <inpu
             value={formState.contact}
             onChange={(event) => setFormState((state) => ({ ...state, contact: event.target.value }))}
             placeholder="Phone or email"
