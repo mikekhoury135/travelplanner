@@ -54,10 +54,33 @@ const reducer = (state: TravelDataState, action: TravelDataAction): TravelDataSt
         flights: (action.payload.flights ?? []).map((flight) => ({
           ...flight,
           hasConnection: flight.hasConnection ?? false,
+          totalDuration: flight.totalDuration ?? undefined,
+          pointsPartner: flight.pointsPartner ?? undefined,
+          pricePoints: typeof flight.pricePoints === 'number' ? flight.pricePoints : undefined,
+          selected: flight.selected ?? false,
         })),
-        hotels: action.payload.hotels ?? [],
-        rentals: action.payload.rentals ?? [],
-        trains: action.payload.trains ?? [],
+        hotels: (action.payload.hotels ?? []).map((hotel) => ({
+          ...hotel,
+          starRating: typeof hotel.starRating === 'number' ? hotel.starRating : undefined,
+          address: hotel.address ?? undefined,
+          contact: hotel.contact ?? undefined,
+          checkIn: hotel.checkIn ?? '',
+          checkOut: hotel.checkOut ?? '',
+          selected: hotel.selected ?? false,
+        })),
+        rentals: (action.payload.rentals ?? []).map((rental) => ({
+          ...rental,
+          pickupDate: rental.pickupDate ?? '',
+          dropoffDate: rental.dropoffDate ?? '',
+          selected: rental.selected ?? false,
+        })),
+        trains: (action.payload.trains ?? []).map((train) => ({
+          ...train,
+          departureTime: train.departureTime ?? undefined,
+          station: train.station ?? undefined,
+          stationAddress: train.stationAddress ?? undefined,
+          selected: train.selected ?? false,
+        })),
       };
     case 'addFlight': {
       const flight: FlightOption = { id: generateId(), selected: false, ...action.payload };
