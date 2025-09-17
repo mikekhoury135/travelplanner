@@ -341,6 +341,7 @@ button.link:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
 .form label.checkbox {
   display: flex;
   align-items: center;

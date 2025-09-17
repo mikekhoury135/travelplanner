@@ -87,7 +87,7 @@ export const HotelForm = () => {
         </label>
         <label>
           Contact
-          <input
+          <inpu
             value={formState.contact}
             onChange={(event) => setFormState((state) => ({ ...state, contact: event.target.value }))}
             placeholder="Phone or email"
