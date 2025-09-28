@@ -1,13 +1,269 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Travel Planner</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="page">
+      <header class="page__header">
+        <h1>Travel Planner</h1>
+        <p>
+          Capture flights, accommodation, and ground transportation options in one place. Pick your
+          favourites and keep an eye on estimated trip costs as you plan.
+        </p>
+      </header>
+
+      <main class="layout">
+        <div class="panels">
+          <section class="panel" aria-labelledby="flights-heading">
+            <header class="panel__header">
+              <div>
+                <h2 id="flights-heading">Air travel</h2>
+                <p class="muted">Track airfare options across airlines, cash, and points.</p>
+              </div>
+            </header>
+            <form id="flight-form" class="data-form" autocomplete="off">
+              <h3>Add a flight option</h3>
+              <p class="form__status hidden" data-editing-message>Editing existing flight</p>
+              <div class="form-grid">
+                <label>
+                  Airline
+                  <input name="airline" required placeholder="e.g. Air Canada" />
+                </label>
+                <label>
+                  Flight code
+                  <input name="flightCode" required placeholder="e.g. AC 890" />
+                </label>
+                <label>
+                  Route
+                  <input name="route" required placeholder="e.g. Toronto → Milan" />
+                </label>
+                <label>
+                  Departure
+                  <input name="departure" type="datetime-local" required />
+                </label>
+                <label>
+                  Total travel time
+                  <input name="totalDuration" placeholder="e.g. 7h 45m" />
+                </label>
+                <label class="checkbox">
+                  <input name="hasConnection" type="checkbox" />
+                  <span>Connecting flight</span>
+                </label>
+                <label>
+                  Price (CAD)
+                  <input name="priceCad" type="number" min="0" step="0.01" required />
+                </label>
+                <label>
+                  Price in points
+                  <input name="pricePoints" type="number" min="0" step="1" placeholder="e.g. 65000" />
+                </label>
+                <label>
+                  Points partner
+                  <input name="pointsPartner" placeholder="e.g. Aeroplan" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="primary"
+                  data-action-button
+                  data-default-label="Add flight"
+                  data-edit-label="Save flight"
+                >
+                  Add flight
+                </button>
+                <button type="button" class="link hidden" data-cancel-edit>Cancel</button>
+              </div>
+            </form>
+            <div id="flight-list" class="option-list" aria-live="polite"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="hotels-heading">
+            <header class="panel__header">
+              <div>
+                <h2 id="hotels-heading">Hotels</h2>
+                <p class="muted">Document accommodation details, including check-in/out information.</p>
+              </div>
+            </header>
+            <form id="hotel-form" class="data-form" autocomplete="off">
+              <h3>Add a hotel option</h3>
+              <p class="form__status hidden" data-editing-message>Editing existing hotel</p>
+              <div class="form-grid">
+                <label>
+                  Hotel name
+                  <input name="name" required placeholder="e.g. Hotel Milano Scala" />
+                </label>
+                <label>
+                  City
+                  <input name="city" required placeholder="e.g. Milan" />
+                </label>
+                <label>
+                  Star rating
+                  <input name="starRating" type="number" min="1" max="5" step="0.5" />
+                </label>
+                <label>
+                  Address (optional)
+                  <input name="address" placeholder="Street, city" />
+                </label>
+                <label>
+                  Contact (optional)
+                  <input name="contact" placeholder="Email or phone" />
+                </label>
+                <label>
+                  Check-in date
+                  <input name="checkIn" type="date" required />
+                </label>
+                <label>
+                  Check-out date
+                  <input name="checkOut" type="date" required />
+                </label>
+                <label>
+                  Price (CAD)
+                  <input name="priceCad" type="number" min="0" step="0.01" required />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="primary"
+                  data-action-button
+                  data-default-label="Add hotel"
+                  data-edit-label="Save hotel"
+                >
+                  Add hotel
+                </button>
+                <button type="button" class="link hidden" data-cancel-edit>Cancel</button>
+              </div>
+            </form>
+            <div id="hotel-list" class="option-list" aria-live="polite"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="rentals-heading">
+            <header class="panel__header">
+              <div>
+                <h2 id="rentals-heading">Rental cars</h2>
+                <p class="muted">Capture car hire quotes and keep pickup/drop-off logistics handy.</p>
+              </div>
+            </header>
+            <form id="rental-form" class="data-form" autocomplete="off">
+              <h3>Add a rental car option</h3>
+              <p class="form__status hidden" data-editing-message>Editing existing rental</p>
+              <div class="form-grid">
+                <label>
+                  Company
+                  <input name="company" required placeholder="e.g. Hertz" />
+                </label>
+                <label>
+                  Daily rate (CAD)
+                  <input name="dailyRate" type="number" min="0" step="0.01" required />
+                </label>
+                <label>
+                  Pickup location
+                  <input name="pickupLocation" required placeholder="City or airport" />
+                </label>
+                <label>
+                  Drop-off location
+                  <input name="dropoffLocation" required placeholder="City or airport" />
+                </label>
+                <label>
+                  Pickup date
+                  <input name="pickupDate" type="date" required />
+                </label>
+                <label>
+                  Drop-off date
+                  <input name="dropoffDate" type="date" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="primary"
+                  data-action-button
+                  data-default-label="Add rental"
+                  data-edit-label="Save rental"
+                >
+                  Add rental
+                </button>
+                <button type="button" class="link hidden" data-cancel-edit>Cancel</button>
+              </div>
+            </form>
+            <div id="rental-list" class="option-list" aria-live="polite"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="trains-heading">
+            <header class="panel__header">
+              <div>
+                <h2 id="trains-heading">Trains</h2>
+                <p class="muted">Track rail segments and station details for multi-city journeys.</p>
+              </div>
+            </header>
+            <form id="train-form" class="data-form" autocomplete="off">
+              <h3>Add a train option</h3>
+              <p class="form__status hidden" data-editing-message>Editing existing train</p>
+              <div class="form-grid">
+                <label>
+                  Starting point
+                  <input name="startingPoint" required placeholder="e.g. Milan" />
+                </label>
+                <label>
+                  Destination
+                  <input name="destination" required placeholder="e.g. Florence" />
+                </label>
+                <label>
+                  Departure time
+                  <input name="departureTime" type="datetime-local" />
+                </label>
+                <label>
+                  Station (optional)
+                  <input name="station" placeholder="e.g. Milano Centrale" />
+                </label>
+                <label>
+                  Station address (optional)
+                  <input name="stationAddress" placeholder="Street, city" />
+                </label>
+                <label>
+                  Price (CAD)
+                  <input name="priceCad" type="number" min="0" step="0.01" required />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="primary"
+                  data-action-button
+                  data-default-label="Add train"
+                  data-edit-label="Save train"
+                >
+                  Add train
+                </button>
+                <button type="button" class="link hidden" data-cancel-edit>Cancel</button>
+              </div>
+            </form>
+            <div id="train-list" class="option-list" aria-live="polite"></div>
+          </section>
+        </div>
+
+        <section class="summary" aria-labelledby="summary-heading">
+          <header class="summary__header">
+            <div>
+              <h2 id="summary-heading">Your selected itinerary</h2>
+              <p class="muted">A running total of the options you have marked as selected.</p>
+            </div>
+            <button type="button" class="link" id="clear-data">Clear all data</button>
+          </header>
+          <div id="summary-content" class="summary__content"></div>
+          <footer id="summary-footer" class="summary__footer hidden">
+            <h3>Grand total</h3>
+            <p id="grand-total" class="summary__grand"></p>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
   </body>
 </html>

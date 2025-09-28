@@ -1,49 +1,52 @@
 # Travel Planner
 
-A React + TypeScript prototype for planning vacation logistics in one place. The app lets you log every airfare, hotel, and
-rental car option you're considering, mark preferred choices, and see the combined trip cost update instantly. Data is stored
-locally in the browser today, with the architecture ready for a future account-based backend.
+A lightweight travel budgeting dashboard that runs entirely in the browser. Add flight, hotel, rental
+car, and train options, mark your favourites, and compare cash and points totals without signing in
+or running a dev server. All data lives in `localStorage`, so the app works offline-friendly today
+and can later be wired up to a backend account system.
 
 ## Features
 
-- ✈️ **Air travel tracker** – capture airline, flight code, route, departure time, CAD fare, and optional points + partner.
-- 🏨 **Hotel log** – record hotel name, city, star rating, address, contact information, stay dates, and price.
-- 🚗 **Rental car quotes** – keep pickup/drop-off details, daily rates, and date ranges for ground transportation.
-- ✅ **Selectable itinerary summary** – mark the options you like best and review totals for each category plus a grand total.
-- 💾 **Local caching** – travel data is persisted to `localStorage`, but the `TravelDataStore` interface makes it easy to swap in
-  a remote persistence layer later.
+- Capture detailed flight information including connections, duration, CAD pricing, and points.
+- Track hotel stays with check-in/out dates, optional address/contact fields, and price estimates.
+- Record rental car quotes and automatically calculate multi-day totals when selected.
+- Plan rail segments with departure times, station details, and pricing.
+- Inline editing for every entry plus selection toggles to build an itinerary summary.
+- Live summary panel that aggregates cash totals, points requirements, and rental durations.
 
 ## Getting started
 
-```bash
-npm install
-npm run dev
+No build tools are required—the project is just static HTML, CSS, and JavaScript. Clone the repo and
+open `index.html` directly in your browser of choice:
+
+```sh
+# from the repository root
+open index.html              # macOS
+xdg-open index.html          # Linux
+start index.html             # Windows
 ```
 
-The development server runs on [http://localhost:5173](http://localhost:5173). Update the forms to add options, then mark items
-as "Select" to include them in the itinerary summary.
+If you prefer to serve the files locally, any static HTTP server will work (for example `python -m
+http.server`).
 
-## Available scripts
+## Deployment to GitHub Pages
 
-- `npm run dev` – start the Vite development server.
-- `npm run build` – generate a production build.
-- `npm run preview` – preview the production build locally.
-- `npm run lint` – run the configured ESLint rules.
+Because the site is static, you can deploy it by pointing GitHub Pages at the repository or a `docs/`
+folder—no bundler output is required. After pushing to `main`:
 
-## Project structure
+1. In your repository settings, open **Pages**.
+2. Select **Deploy from a branch** and choose the branch + folder that contains `index.html` (usually
+   `main` and `/root`).
+3. Save. GitHub Pages will serve the application as-is, and future commits update it automatically.
 
-```
-src/
-├── components/        # Forms, lists, and summary UI components
-├── context/           # Application state management + persistence integration
-├── services/          # Local storage adapter implementing the persistence interface
-├── utils/             # Formatting helpers
-├── App.tsx            # Page layout tying everything together
-└── main.tsx           # Application entry point + provider wiring
-```
+## Data persistence
 
-## Next steps
+All entries are stored in the browser's `localStorage` under the key `travel-planner-data-v2`. Each
+load sanitizes stored records so older data keeps working even as new fields are introduced. Clearing
+the browser storage (or using the "Clear all data" button in the UI) resets the app.
 
-- Introduce authentication and replace the local storage adapter with an API-backed persistence layer.
-- Expand itinerary categories (experiences, dining, trains) and add budgeting insights.
-- Enable collaboration so friends or family can co-plan the same trip.
+## Roadmap
+
+- Plug the existing data layer into an account-backed API when authentication becomes available.
+- Export itineraries for sharing with travel companions.
+- Surface analytics such as nightly averages and cost breakdowns per city.
